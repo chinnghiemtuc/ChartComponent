@@ -1,0 +1,23 @@
+{
+  "name": "React-chartjs-2 example",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://codesandbox.io/s/new",
+  "main": "src/index.js",
+  "dependencies": {
+    "ag-grid-community": "20.2.0",
+    "ag-grid-enterprise": "20.2.0",
+    "ag-grid-react": "20.2.0",
+    "antd": "3.17.0",
+    "chart.js": "2.7.1",
+    "moment": "2.24.0",
+    "react": "16.2.0",
+    "react-chartjs-2": "2.7.0",
+    "react-dom": "16.2.0",
+    "react-router-dom": "5.0.0"
+  },
+  "devDependencies": {
+    "react-scripts": "1.1.0"
+  }
+}

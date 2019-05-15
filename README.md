@@ -1,2 +1,0 @@
-# ChartComponent
-Created with CodeSandbox
