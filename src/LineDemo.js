@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { Select, DatePicker, Row, Col, Typography } from 'antd'
-import { AgGridReact } from 'ag-grid-react'
-import { BarChartComponent, PieChartComponent } from './ChartComponent'
+
+import {
+	BarChartComponent,
+	PieChartComponent,
+	PieChartToAgGrid
+} from './ChartComponent'
 
 const { Option } = Select
 const { Title } = Typography
@@ -94,79 +98,20 @@ const mockData = [
 export default class LineDemo extends Component {
 	state = {
 		barData: [],
-		pieData: [],
-		columnDefs: [
-			{
-				headerName: 'testName',
-				field: 'testName'
-			},
-			{
-				headerName: 'price',
-				field: 'price'
-			},
-			{
-				headerName: 'start',
-				field: 'start'
-			},
-			{
-				headerName: 'end',
-				field: 'end'
-			}
-		],
-		defaultColDef: {
-			sortable: true,
-			filter: true,
-			resizable: true
-		},
-		rowData: null
+		pieData: []
 	}
 
 	componentWillMount() {
 		this.setState({
 			barData: mockData,
-			pieData: mockData
+			pieData: mockData,
+			aggridData: mockData
 		})
-		this.load(mockData)
-	}
-
-	load = data => {
-		data.map((item, index) => {
-			// 	const testName = uppercaseFristLetter(item[label])
-			// 	const price = item[dataset]
-			// 	const start = item.start
-			// 	const end = item.end
-			// 	// const compare = chartData.labels.some(item => item === testName)
-			// 	// console.log('B', index)
-			// 	const exist = chartData.labels.indexOf(testName)
-			// 	// console.log('C', index, exist)
-			// 	if (exist > -1) {
-			// 		// console.log(chartData.datasets[0].data[exist])
-			// 		chartData.datasets[0].data[exist] += price
-			// 		// console.log('A', index, exist)
-			// 		// console.log(pieRowData[exist])
-			// 		const duplicate = pieRowData[exist]
-			// 		if (start < duplicate.start) {
-			// 			pieRowData[exist].start = start
-			// 		}
-			// 		if (end > duplicate.end) {
-			// 			pieRowData[exist].end = end
-			// 		}
-			// 	} else {
-			// 		chartData.labels.push(testName)
-			// 		chartData.datasets[0].data.push(price)
-			// 		pieRowData.push(item)
-			// 	}
-			return item
-		})
+		// this.load(mockData)
 	}
 
 	handleChange = value => {
 		console.log(value)
-	}
-
-	onPicker = (date, dateString) => {
-		const startInput = +moment(date[0]._d)
-		const endInput = +moment(date[1]._d)
 
 		this.setState({
 			pieData: mockData
@@ -181,7 +126,7 @@ export default class LineDemo extends Component {
 	}
 
 	render() {
-		const { barData, pieData } = this.state
+		const { barData, pieData, aggridData } = this.state
 		return (
 			<div
 				style={{
@@ -266,20 +211,37 @@ export default class LineDemo extends Component {
 					</Col>
 					<Col span={17}>
 						{/* Ag-grid */}
-						{/* <div
-							className="ag-theme-balham"
-							style={{
-								height: '47vh',
-								width: '100%'
+						<PieChartToAgGrid
+							data={aggridData}
+							options={{
+								label: 'testName',
+								dataset: 'price',
+								defaultColDef: {
+									sortable: true,
+									filter: true,
+									resizable: true
+								},
+								columnDefs: [
+									{
+										headerName: 'testName',
+										field: 'testName'
+									},
+									{
+										headerName: 'price',
+										field: 'price'
+									},
+									{
+										headerName: 'start',
+										field: 'start'
+									},
+									{
+										headerName: 'end',
+										field: 'end'
+									}
+								]
 							}}
-						>
-							<AgGridReact
-								columnDefs={this.state.columnDefs}
-								rowData={this.state.rowData}
-								defaultColDef={this.state.defaultColDef}
-								onGridReady={this.onGridReady}
-							/>
-						</div> */}
+							onGridReady={this.onGridReady}
+						/>
 					</Col>
 				</Row>
 				<div />

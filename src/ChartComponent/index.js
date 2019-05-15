@@ -1,6 +1,7 @@
 import React from 'react'
 import { Bar, Pie } from 'react-chartjs-2'
 import moment from 'moment'
+import { AgGridReact } from 'ag-grid-react'
 
 const daysInMonth = moment().daysInMonth() + 1 // 31
 const days = [...Array(daysInMonth).keys()].slice(1)
@@ -135,27 +136,16 @@ const PieChartComponent = props => {
 
 	let pieRowData = []
 
-	// console.log(dataInput)
-
 	data.map((item, index) => {
 		const labelItem = uppercaseFristLetter(item[label])
 		const datasetItem = item[dataset]
 		const start = item.start
 		const end = item.end
 
-		// const compare = chartData.labels.some(item => item === labelItem)
-
-		// console.log('B', index)
-
 		const exist = chartData.labels.indexOf(labelItem)
 
-		// console.log('C', index, exist)
-
 		if (exist > -1) {
-			// console.log(chartData.datasets[0].data[exist])
 			chartData.datasets[0].data[exist] += datasetItem
-			// console.log('A', index, exist)
-			// console.log(pieRowData[exist])
 			const duplicate = pieRowData[exist]
 			if (start < duplicate.start) {
 				pieRowData[exist].start = start
@@ -172,21 +162,6 @@ const PieChartComponent = props => {
 	})
 
 	chartData.datasets[0].backgroundColor = colors
-
-	// console.log('C', chartData)
-	// console.log('D', pieRowData)
-
-	// pieRowData = pieRowData.map(item => ({
-	// 	testName: item.testName,
-	// 	price: item.price,
-	// 	start: moment(item.start).format('DD/MM/YYYY'),
-	// 	end: moment(item.end).format('DD/MM/YYYY')
-	// }))
-
-	// this.setState({
-	// 	pieData: chartData,
-	// 	rowData: pieRowData
-	// })
 
 	return (
 		<article style={{ height: '40vh' }}>
@@ -210,4 +185,56 @@ const PieChartComponent = props => {
 	)
 }
 
-export { BarChartComponent, PieChartComponent }
+const PieChartToAgGrid = props => {
+	console.log(props)
+	const { data, options, onGridReady } = props
+	const { label, dataset, columnDefs, defaultColDef } = options
+
+	// console.log(label, dataset, columnDefs, defaultColDef)
+	const rowData = []
+
+	data.map((item, index) => {
+		const labelItem = item[label]
+		const datasetItem = item[dataset]
+		const start = item.start
+		const end = item.end
+
+		const compare = rowData.find(item => item[label] === labelItem)
+
+		if (compare) {
+			if (datasetItem > 0) {
+				compare[dataset] += datasetItem
+			}
+			if (start < compare.start) {
+				compare.start = start
+			}
+			if (end > compare.end) {
+				compare.end = end
+			}
+		} else {
+			const clone = JSON.parse(JSON.stringify(item))
+			rowData.push(clone)
+		}
+		return item
+	})
+	// console.log('rowData', rowData)
+
+	return (
+		<div
+			className="ag-theme-balham"
+			style={{
+				height: '47vh',
+				width: '100%'
+			}}
+		>
+			<AgGridReact
+				columnDefs={columnDefs}
+				rowData={rowData}
+				defaultColDef={defaultColDef}
+				onGridReady={onGridReady}
+			/>
+		</div>
+	)
+}
+
+export { BarChartComponent, PieChartComponent, PieChartToAgGrid }
