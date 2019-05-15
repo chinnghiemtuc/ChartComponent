@@ -126,6 +126,38 @@ export default class LineDemo extends Component {
 			barData: mockData,
 			pieData: mockData
 		})
+		this.load(mockData)
+	}
+
+	load = data => {
+		// data.map((item, index) => {
+		// 	const testName = uppercaseFristLetter(item[label])
+		// 	const price = item[dataset]
+		// 	const start = item.start
+		// 	const end = item.end
+		// 	// const compare = chartData.labels.some(item => item === testName)
+		// 	// console.log('B', index)
+		// 	const exist = chartData.labels.indexOf(testName)
+		// 	// console.log('C', index, exist)
+		// 	if (exist > -1) {
+		// 		// console.log(chartData.datasets[0].data[exist])
+		// 		chartData.datasets[0].data[exist] += price
+		// 		// console.log('A', index, exist)
+		// 		// console.log(pieRowData[exist])
+		// 		const duplicate = pieRowData[exist]
+		// 		if (start < duplicate.start) {
+		// 			pieRowData[exist].start = start
+		// 		}
+		// 		if (end > duplicate.end) {
+		// 			pieRowData[exist].end = end
+		// 		}
+		// 	} else {
+		// 		chartData.labels.push(testName)
+		// 		chartData.datasets[0].data.push(price)
+		// 		pieRowData.push(item)
+		// 	}
+		// 	return item
+		// })
 	}
 
 	onPicker = (date, dateString) => {

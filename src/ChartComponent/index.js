@@ -138,22 +138,22 @@ const PieChartComponent = props => {
 	// console.log(dataInput)
 
 	data.map((item, index) => {
-		const testName = uppercaseFristLetter(item[label])
-		const price = item[dataset]
+		const labelItem = uppercaseFristLetter(item[label])
+		const datasetItem = item[dataset]
 		const start = item.start
 		const end = item.end
 
-		// const compare = chartData.labels.some(item => item === testName)
+		// const compare = chartData.labels.some(item => item === labelItem)
 
 		// console.log('B', index)
 
-		const exist = chartData.labels.indexOf(testName)
+		const exist = chartData.labels.indexOf(labelItem)
 
 		// console.log('C', index, exist)
 
 		if (exist > -1) {
 			// console.log(chartData.datasets[0].data[exist])
-			chartData.datasets[0].data[exist] += price
+			chartData.datasets[0].data[exist] += datasetItem
 			// console.log('A', index, exist)
 			// console.log(pieRowData[exist])
 			const duplicate = pieRowData[exist]
@@ -164,8 +164,8 @@ const PieChartComponent = props => {
 				pieRowData[exist].end = end
 			}
 		} else {
-			chartData.labels.push(testName)
-			chartData.datasets[0].data.push(price)
+			chartData.labels.push(labelItem)
+			chartData.datasets[0].data.push(datasetItem)
 			pieRowData.push(item)
 		}
 		return item
