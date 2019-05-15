@@ -173,8 +173,8 @@ const PieChartComponent = props => {
 
 	chartData.datasets[0].backgroundColor = colors
 
-	// console.log('C', chartData)
-	// console.log('D', pieRowData)
+	console.log('C', chartData)
+	console.log('D', pieRowData)
 
 	// pieRowData = pieRowData.map(item => ({
 	// 	testName: item.testName,
@@ -193,9 +193,9 @@ const PieChartComponent = props => {
 			<Pie
 				data={chartData.datasets ? chartData : {}}
 				options={{
-					title: {
+					title: title && {
 						display: true,
-						text: title ? title : 'Pie Chart',
+						text: title,
 						fontSize: 20
 					},
 					legend: {
@@ -211,5 +211,3 @@ const PieChartComponent = props => {
 }
 
 export { BarChartComponent, PieChartComponent }
-
-// export default { ConvertBarChart }

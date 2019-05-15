@@ -121,120 +121,21 @@ export default class LineDemo extends Component {
 		rowData: null
 	}
 
-	uppercaseFristLetter = item => item.charAt(0).toUpperCase() + item.slice(1)
-
-	convertPieData = dataInput => {
-		let chartData = {
-			labels: [],
-			datasets: [
-				{
-					data: [],
-					backgroundColor: []
-				}
-			]
-		}
-
-		let pieRowData = []
-
-		const colors = [
-			'rgba(235, 59, 90, 0.6)',
-			'rgba(250, 130, 49, 0.6)',
-			'rgba(247, 183, 49, 0.6)',
-			'rgba(32, 191, 107, 0.6)',
-			'rgba(15, 185, 177, 0.6)',
-			'rgba(45, 152, 218, 0.6)',
-			'rgba(56, 103, 214, 0.6)',
-			'rgba(136, 84, 208, 0.6)',
-			'rgba(165, 177, 194, 0.6)',
-			'rgba(75, 101, 132, 0.6)'
-		]
-
-		// console.log(dataInput)
-
-		dataInput.map((item, index) => {
-			const testName = this.uppercaseFristLetter(item.testName)
-			const price = item.price
-			const start = item.start
-			const end = item.end
-
-			// const compare = chartData.labels.some(item => item === testName)
-
-			// console.log('B', index)
-
-			const exist = chartData.labels.indexOf(testName)
-
-			console.log('C', index, exist)
-			// Ag-grid test
-			// pieRowData.push(item)
-
-			if (exist > -1) {
-				console.log('A', testName, chartData.datasets[0].data[exist], price)
-				chartData.datasets[0].data[exist] += price
-				console.log('B', chartData.datasets[0].data[exist])
-				// console.log(pieRowData[exist])
-
-				// Ag-grid
-				const duplicate = pieRowData[exist]
-				if (duplicate) {
-					if (price > 0) {
-						duplicate.price += price
-					}
-					// if (start < duplicate.start) {
-					// duplicate.start = start
-					// }
-					// if (end > duplicate.end) {
-					// duplicate.end = end
-					// }
-				}
-			} else {
-				chartData.labels.push(testName)
-				chartData.datasets[0].data.push(price)
-				// Ag-grid
-				// pieRowData.push(item)
-			}
-			return item
-		})
-
-		chartData.datasets[0].backgroundColor = colors
-
-		// console.log('C', chartData)
-		// console.log('D', pieRowData)
-
-		pieRowData = pieRowData.map(item => ({
-			testName: item.testName,
-			price: item.price,
-			start: moment(item.start).format('DD/MM/YYYY'),
-			end: moment(item.end).format('DD/MM/YYYY')
-		}))
-
-		this.setState({
-			pieData: chartData,
-			rowData: dataInput
-		})
-	}
-
 	componentWillMount() {
-		// setTimeout(
-		// 	function() {
-		// 		// this.convertBarData('M', mockData)
-		// 		this.convertPieData(mockData)
-		// 	}.bind(this),
-		// 	2000
-		// )
 		this.setState({
-			source: mockData
+			barData: mockData,
+			pieData: mockData
 		})
-		// this.convertPieData(mockData)
 	}
 
-	// onPicker = (date, dateString) => {
-	// 	const startInput = +moment(date[0]._d)
-	// 	const endInput = +moment(date[1]._d)
+	onPicker = (date, dateString) => {
+		const startInput = +moment(date[0]._d)
+		const endInput = +moment(date[1]._d)
 
-	// 	const copyMockData = [...mockData]
-
-	// 	this.convertPieData(copyMockData)
-	// }
+		this.setState({
+			pieData: mockData
+		})
+	}
 
 	onGridReady = params => {
 		this.gridApi = params.api
@@ -245,7 +146,6 @@ export default class LineDemo extends Component {
 
 	render() {
 		const { barData, pieData } = this.state
-		// console.log(this.state.source)
 		return (
 			<div
 				style={{
@@ -264,7 +164,7 @@ export default class LineDemo extends Component {
 				>
 					{/* Bar */}
 					<BarChartComponent
-						data={this.state.source}
+						data={barData}
 						options={{
 							label: 'testName',
 							dataset: 'price',
@@ -299,34 +199,16 @@ export default class LineDemo extends Component {
 							}}
 						>
 							{/* RangePicker */}
-							{/* <RangePicker onChange={this.onPicker} style={{ float: 'left' }} /> */}
+							<RangePicker onChange={this.onPicker} style={{ float: 'left' }} />
+							{/* Pie */}
 							<PieChartComponent
-								data={this.state.source}
+								data={pieData}
 								options={{
 									label: 'testName',
 									dataset: 'price',
 									title: 'Top 10 referrals'
 								}}
 							/>
-							{/* Pie */}
-							{/* <article style={{ height: '40vh' }}>
-								<Pie
-									data={pieData.datasets ? pieData : {}}
-									options={{
-										title: {
-											display: true,
-											text: 'Top 10 referrals',
-											fontSize: 20
-										},
-										legend: {
-											display: false,
-											position: 'left'
-										},
-										maintainAspectRatio: false // Don't maintain w/h ratio
-									}}
-									height={50}
-								/>
-							</article> */}
 						</div>
 					</Col>
 					<Col span={16}>
