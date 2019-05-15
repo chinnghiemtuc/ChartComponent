@@ -2,8 +2,8 @@ import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import moment from 'moment'
 
-const daysCount = moment().daysInMonth() + 1 // 31
-const days = [...Array(daysCount).keys()].slice(0)
+const daysInMonth = moment().daysInMonth() + 1 // 31
+const days = [...Array(daysInMonth).keys()].slice(1)
 
 const months = [
 	'January',
