@@ -97,7 +97,7 @@ const BarChartComponent = props => {
 	// console.log(chartData)
 
 	return (
-		<article style={{ height: '43vh', paddingBottom: '20px' }}>
+		<article style={{ height: '42vh', paddingBottom: '20px' }}>
 			<Bar
 				data={chartData.datasets ? chartData : {}}
 				options={{
@@ -164,7 +164,7 @@ const PieChartComponent = props => {
 	chartData.datasets[0].backgroundColor = colors
 
 	return (
-		<article style={{ height: '40vh' }}>
+		<article style={{ height: '38vh' }}>
 			<Pie
 				data={chartData.datasets ? chartData : {}}
 				options={{

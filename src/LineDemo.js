@@ -107,7 +107,6 @@ export default class LineDemo extends Component {
 			pieData: mockData,
 			aggridData: mockData
 		})
-		// this.load(mockData)
 	}
 
 	handleChange = value => {
