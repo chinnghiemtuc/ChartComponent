@@ -3,7 +3,7 @@ import { Bar, Pie } from 'react-chartjs-2'
 import moment from 'moment'
 import { Select, DatePicker, Row, Col } from 'antd'
 import { AgGridReact } from 'ag-grid-react'
-// import HelloWorld from './ChartComponent'
+import { BarChartComponent } from './ChartComponent'
 
 const { RangePicker } = DatePicker
 
@@ -102,104 +102,104 @@ export default class LineDemo extends Component {
 
 	uppercaseFristLetter = item => item.charAt(0).toUpperCase() + item.slice(1)
 
-	convertBarData = (type, dataInput) => {
-		let chartData = { labels: [], datasets: [] }
-		let { datasets } = chartData
+	// convertBarData = (type, dataInput) => {
+	// 	let chartData = { labels: [], datasets: [] }
+	// 	let { datasets } = chartData
 
-		const daysCount = moment().daysInMonth() // 31
-		const days = [...Array(daysCount).keys()]
+	// 	const daysCount = moment().daysInMonth() // 31
+	// 	const days = [...Array(daysCount).keys()]
 
-		const months = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		]
+	// 	const months = [
+	// 		'January',
+	// 		'February',
+	// 		'March',
+	// 		'April',
+	// 		'May',
+	// 		'June',
+	// 		'July',
+	// 		'August',
+	// 		'September',
+	// 		'October',
+	// 		'November',
+	// 		'December'
+	// 	]
 
-		const colors = [
-			'rgba(235, 59, 90, 0.6)',
-			'rgba(250, 130, 49, 0.6)',
-			'rgba(247, 183, 49, 0.6)',
-			'rgba(32, 191, 107, 0.6)',
-			'rgba(15, 185, 177, 0.6)',
-			'rgba(45, 152, 218, 0.6)',
-			'rgba(56, 103, 214, 0.6)',
-			'rgba(136, 84, 208, 0.6)',
-			'rgba(165, 177, 194, 0.6)',
-			'rgba(75, 101, 132, 0.6)'
-		]
+	// 	const colors = [
+	// 		'rgba(235, 59, 90, 0.6)',
+	// 		'rgba(250, 130, 49, 0.6)',
+	// 		'rgba(247, 183, 49, 0.6)',
+	// 		'rgba(32, 191, 107, 0.6)',
+	// 		'rgba(15, 185, 177, 0.6)',
+	// 		'rgba(45, 152, 218, 0.6)',
+	// 		'rgba(56, 103, 214, 0.6)',
+	// 		'rgba(136, 84, 208, 0.6)',
+	// 		'rgba(165, 177, 194, 0.6)',
+	// 		'rgba(75, 101, 132, 0.6)'
+	// 	]
 
-		const labelsInput = type === 'M' ? months : days
+	// 	const labelsInput = type === 'M' ? months : days
 
-		dataInput.map(item => {
-			const testName = this.uppercaseFristLetter(item.testName)
-			// const testName = item.testName
-			const price = item.price
-			const start = moment(item.start).format(type) - 1
-			const end = moment(item.end).format(type) - 1
-			// console.log(
-			// 	'startTime',
-			// 	moment(item.start).format('DD/MMMM/YYYY hh:mm:ss')
-			// )
-			// console.log('endTime', moment(item.start).format('DD/MMMM/YYYY hh:mm:ss'))
-			// console.log(start, end)
-			for (let i = 0; i < labelsInput.length; i++) {
-				const compare = datasets.some(item => item.label === testName)
-				if (compare) {
-					const compareArray = datasets.filter(item => item.label === testName)
-					if (compareArray[0].data.length === labelsInput.length) {
-						if (i >= start && i <= end) {
-							// console.log('G', i, price)
-							compareArray[0].data[i] += price
-							// console.log('GA', i, compareArray[0].data[i])
-						}
-					} else {
-						if (i >= start && i <= end) {
-							// console.log('C', i, price)
-							compareArray[0].data.push(price)
-						} else {
-							// console.log('D', i, 0)
-							compareArray[0].data.push(0)
-						}
-					}
-				} else {
-					datasets.push({
-						label: testName,
-						backgroundColor: colors[datasets.length],
-						// backgroundColor: colors,
-						data: []
-					})
-					const compareArray = datasets.filter(item => item.label === testName)
-					if (i >= start && i <= end) {
-						// console.log('A', i, price)
-						compareArray[0].data.push(price)
-					} else {
-						// console.log('B', i, 0)
-						compareArray[0].data.push(0)
-					}
-				}
-			}
-			// console.log(datasets)
-			return item
-		})
+	// 	dataInput.map(item => {
+	// 		const testName = this.uppercaseFristLetter(item.testName)
+	// 		// const testName = item.testName
+	// 		const price = item.price
+	// 		const start = moment(item.start).format(type) - 1
+	// 		const end = moment(item.end).format(type) - 1
+	// 		// console.log(
+	// 		// 	'startTime',
+	// 		// 	moment(item.start).format('DD/MMMM/YYYY hh:mm:ss')
+	// 		// )
+	// 		// console.log('endTime', moment(item.start).format('DD/MMMM/YYYY hh:mm:ss'))
+	// 		// console.log(start, end)
+	// 		for (let i = 0; i < labelsInput.length; i++) {
+	// 			const compare = datasets.some(item => item.label === testName)
+	// 			if (compare) {
+	// 				const compareArray = datasets.filter(item => item.label === testName)
+	// 				if (compareArray[0].data.length === labelsInput.length) {
+	// 					if (i >= start && i <= end) {
+	// 						// console.log('G', i, price)
+	// 						compareArray[0].data[i] += price
+	// 						// console.log('GA', i, compareArray[0].data[i])
+	// 					}
+	// 				} else {
+	// 					if (i >= start && i <= end) {
+	// 						// console.log('C', i, price)
+	// 						compareArray[0].data.push(price)
+	// 					} else {
+	// 						// console.log('D', i, 0)
+	// 						compareArray[0].data.push(0)
+	// 					}
+	// 				}
+	// 			} else {
+	// 				datasets.push({
+	// 					label: testName,
+	// 					backgroundColor: colors[datasets.length],
+	// 					// backgroundColor: colors,
+	// 					data: []
+	// 				})
+	// 				const compareArray = datasets.filter(item => item.label === testName)
+	// 				if (i >= start && i <= end) {
+	// 					// console.log('A', i, price)
+	// 					compareArray[0].data.push(price)
+	// 				} else {
+	// 					// console.log('B', i, 0)
+	// 					compareArray[0].data.push(0)
+	// 				}
+	// 			}
+	// 		}
+	// 		// console.log(datasets)
+	// 		return item
+	// 	})
 
-		chartData.labels = labelsInput
-		// labels.push(labelsInput)
+	// 	chartData.labels = labelsInput
+	// 	// labels.push(labelsInput)
 
-		// console.log(chartData)
+	// 	// console.log(chartData)
 
-		this.setState({
-			barData: chartData
-		})
-	}
+	// 	this.setState({
+	// 		barData: chartData
+	// 	})
+	// }
 
 	convertPieData = dataInput => {
 		let chartData = {
@@ -282,13 +282,13 @@ export default class LineDemo extends Component {
 	}
 
 	componentWillMount() {
-		setTimeout(
-			function() {
-				this.convertBarData('M', mockData)
-				this.convertPieData(mockData)
-			}.bind(this),
-			2000
-		)
+		// setTimeout(
+		// 	function() {
+		// 		// this.convertBarData('M', mockData)
+		// 		this.convertPieData(mockData)
+		// 	}.bind(this),
+		// 	2000
+		// )
 		this.setState({
 			source: mockData
 		})
@@ -312,7 +312,7 @@ export default class LineDemo extends Component {
 
 	render() {
 		const { barData, pieData } = this.state
-		console.log(this.state.source)
+		// console.log(this.state.source)
 		return (
 			<div
 				style={{
@@ -329,8 +329,17 @@ export default class LineDemo extends Component {
 						backgroundColor: '#ffffff'
 					}}
 				>
+					<BarChartComponent
+						data={this.state.source}
+						options={{
+							label: 'testName',
+							dataset: 'price',
+							type: 'D',
+							title: 'Top 10 referrals by months'
+						}}
+					/>
 					{/* Bar */}
-					<article style={{ height: '43vh', paddingBottom: '20px' }}>
+					{/* <article style={{ height: '43vh', paddingBottom: '20px' }}>
 						<Bar
 							ref="chart"
 							data={barData.datasets ? barData : {}}
@@ -363,7 +372,7 @@ export default class LineDemo extends Component {
 							}}
 							height={50}
 						/>
-					</article>
+					</article> */}
 				</div>
 				<Row>
 					<Col span={8}>
@@ -400,7 +409,7 @@ export default class LineDemo extends Component {
 					</Col>
 					<Col span={16}>
 						{/* Ag-grid */}
-						<div
+						{/* <div
 							className="ag-theme-balham"
 							style={{
 								height: '47vh',
@@ -413,7 +422,7 @@ export default class LineDemo extends Component {
 								defaultColDef={this.state.defaultColDef}
 								onGridReady={this.onGridReady}
 							/>
-						</div>
+						</div> */}
 					</Col>
 				</Row>
 				<div />
