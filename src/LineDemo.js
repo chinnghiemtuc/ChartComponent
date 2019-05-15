@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Bar, Pie } from 'react-chartjs-2'
 import moment from 'moment'
-import { Select, DatePicker, Row, Col } from 'antd'
+import { Select, DatePicker, Row, Col, Typography } from 'antd'
 import { AgGridReact } from 'ag-grid-react'
 import { BarChartComponent, PieChartComponent } from './ChartComponent'
 
-const { RangePicker } = DatePicker
+const { Option } = Select
+const { Title } = Typography
 
 const mockData = [
 	{
@@ -130,34 +130,38 @@ export default class LineDemo extends Component {
 	}
 
 	load = data => {
-		// data.map((item, index) => {
-		// 	const testName = uppercaseFristLetter(item[label])
-		// 	const price = item[dataset]
-		// 	const start = item.start
-		// 	const end = item.end
-		// 	// const compare = chartData.labels.some(item => item === testName)
-		// 	// console.log('B', index)
-		// 	const exist = chartData.labels.indexOf(testName)
-		// 	// console.log('C', index, exist)
-		// 	if (exist > -1) {
-		// 		// console.log(chartData.datasets[0].data[exist])
-		// 		chartData.datasets[0].data[exist] += price
-		// 		// console.log('A', index, exist)
-		// 		// console.log(pieRowData[exist])
-		// 		const duplicate = pieRowData[exist]
-		// 		if (start < duplicate.start) {
-		// 			pieRowData[exist].start = start
-		// 		}
-		// 		if (end > duplicate.end) {
-		// 			pieRowData[exist].end = end
-		// 		}
-		// 	} else {
-		// 		chartData.labels.push(testName)
-		// 		chartData.datasets[0].data.push(price)
-		// 		pieRowData.push(item)
-		// 	}
-		// 	return item
-		// })
+		data.map((item, index) => {
+			// 	const testName = uppercaseFristLetter(item[label])
+			// 	const price = item[dataset]
+			// 	const start = item.start
+			// 	const end = item.end
+			// 	// const compare = chartData.labels.some(item => item === testName)
+			// 	// console.log('B', index)
+			// 	const exist = chartData.labels.indexOf(testName)
+			// 	// console.log('C', index, exist)
+			// 	if (exist > -1) {
+			// 		// console.log(chartData.datasets[0].data[exist])
+			// 		chartData.datasets[0].data[exist] += price
+			// 		// console.log('A', index, exist)
+			// 		// console.log(pieRowData[exist])
+			// 		const duplicate = pieRowData[exist]
+			// 		if (start < duplicate.start) {
+			// 			pieRowData[exist].start = start
+			// 		}
+			// 		if (end > duplicate.end) {
+			// 			pieRowData[exist].end = end
+			// 		}
+			// 	} else {
+			// 		chartData.labels.push(testName)
+			// 		chartData.datasets[0].data.push(price)
+			// 		pieRowData.push(item)
+			// 	}
+			return item
+		})
+	}
+
+	handleChange = value => {
+		console.log(value)
 	}
 
 	onPicker = (date, dateString) => {
@@ -221,7 +225,7 @@ export default class LineDemo extends Component {
 					/>
 				</div>
 				<Row>
-					<Col span={8}>
+					<Col span={7}>
 						<div
 							style={{
 								padding: '20px',
@@ -230,22 +234,39 @@ export default class LineDemo extends Component {
 								minHeight: '47vh'
 							}}
 						>
-							{/* RangePicker */}
-							<RangePicker onChange={this.onPicker} style={{ float: 'left' }} />
+							{/* Select */}
+							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+								<Title level={4} type="secondary">
+									Top 10 referrals
+								</Title>
+								<Select
+									defaultValue="Today"
+									style={{ width: 120, float: 'right' }}
+									onChange={this.handleChange}
+								>
+									<Option value="Today">Today</Option>
+									<Option value="This week">This week</Option>
+									<Option value="1 month">1 month</Option>
+									<Option value="3 months">3 months</Option>
+									<Option value="6 months">6 months</Option>
+									<Option value="YTD">YTD</Option>
+								</Select>
+							</div>
+
 							{/* Pie */}
 							<PieChartComponent
 								data={pieData}
 								options={{
 									label: 'testName',
-									dataset: 'price',
-									title: 'Top 10 referrals'
+									dataset: 'price'
+									// title: 'Top 10 referrals'
 								}}
 							/>
 						</div>
 					</Col>
-					<Col span={16}>
+					<Col span={17}>
 						{/* Ag-grid */}
-						<div
+						{/* <div
 							className="ag-theme-balham"
 							style={{
 								height: '47vh',
@@ -258,7 +279,7 @@ export default class LineDemo extends Component {
 								defaultColDef={this.state.defaultColDef}
 								onGridReady={this.onGridReady}
 							/>
-						</div>
+						</div> */}
 					</Col>
 				</Row>
 				<div />
