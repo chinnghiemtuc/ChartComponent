@@ -9,60 +9,81 @@ const { RangePicker } = DatePicker
 
 const mockData = [
 	{
+		customer: 'Chin',
+		age: 25,
 		testName: 'ADN test normal',
 		price: 10000,
 		start: 1557308405783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Hung',
+		age: 24,
 		testName: 'echocardiography',
 		price: 100000,
 		start: 1557394805783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Phong',
+		age: 24,
 		testName: 'ADN test',
 		price: 10000,
+
 		start: 1557394805783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Tam',
+		age: 24,
 		testName: 'skin allergy test',
 		price: 140000,
 		start: 1557481205783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Toan',
+		age: 20,
 		testName: 'ADN test normal',
 		price: 20000,
 		start: 1557481205783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Hoan',
+		age: 22,
 		testName: 'Genetic testing',
 		price: 110000,
 		start: 1557308405783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Trung',
+		age: 30,
 		testName: 'Genetic testing',
 		price: 60000,
 		start: 1557481205783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Hang',
+		age: 25,
 		testName: 'coloscopy',
 		price: 100000,
 		start: 1557481205783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Quynh',
+		age: 22,
 		testName: 'ADN test normal',
 		price: 70000,
 		start: 1557481205783,
 		end: 1557481205783
 	},
 	{
+		customer: 'Ngoc',
+		age: 25,
 		testName: 'coloscopy',
 		price: 100000,
 		start: 1557394805783,
@@ -329,50 +350,31 @@ export default class LineDemo extends Component {
 						backgroundColor: '#ffffff'
 					}}
 				>
+					{/* Bar */}
 					<BarChartComponent
 						data={this.state.source}
 						options={{
 							label: 'testName',
 							dataset: 'price',
 							type: 'D',
-							title: 'Top 10 referrals by months'
+							title: 'Top 10 referrals by months',
+							scales: {
+								yAxes: [
+									{
+										ticks: {
+											callback: function(label, index, labels) {
+												return label / 1000 + 'k'
+											}
+										},
+										scaleLabel: {
+											display: true,
+											labelString: '1k = 1000'
+										}
+									}
+								]
+							}
 						}}
 					/>
-					{/* Bar */}
-					{/* <article style={{ height: '43vh', paddingBottom: '20px' }}>
-						<Bar
-							ref="chart"
-							data={barData.datasets ? barData : {}}
-							options={{
-								title: {
-									display: true,
-									text: 'Top 10 referrals by months',
-									fontSize: 20
-								},
-								legend: {
-									display: true,
-									position: 'right'
-								},
-								maintainAspectRatio: false, // Don't maintain w/h ratio
-								scales: {
-									yAxes: [
-										{
-											ticks: {
-												callback: function(label, index, labels) {
-													return label / 1000 + 'k'
-												}
-											},
-											scaleLabel: {
-												display: true,
-												labelString: '1k = 1000'
-											}
-										}
-									]
-								}
-							}}
-							height={50}
-						/>
-					</article> */}
 				</div>
 				<Row>
 					<Col span={8}>
