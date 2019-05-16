@@ -112,7 +112,7 @@ const BarChartComponent = props => {
 					},
 					legend: {
 						display: true,
-						position: 'right',
+						position: 'bottom',
 					},
 					maintainAspectRatio: false, // Don't maintain w/h ratio
 					scales: scales,
@@ -168,7 +168,10 @@ const PieChartComponent = props => {
 	chartData.datasets[0].backgroundColor = colors
 
 	return (
-		<article style={{ height: '38vh' }}>
+		<article
+			style={{
+				height: '40vh',
+			}}>
 			<Pie
 				data={chartData.datasets ? chartData : {}}
 				options={{
@@ -228,7 +231,9 @@ const PieChartToAgGrid = props => {
 		<div
 			className="ag-theme-balham"
 			style={{
-				height: '47vh',
+				minHeight: '44vh',
+				maxHeight: 'calc(50vh-20px)',
+				height: '400px',
 				width: '100%',
 			}}>
 			<AgGridReact

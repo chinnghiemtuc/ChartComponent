@@ -16,14 +16,16 @@ class App extends React.Component {
 	}
 	render() {
 		return (
-			<BrowserRouter>
-				<Link to="/line">LineDemo</Link>
-				<Link to="/color">Color</Link>
-				<Switch>
-					<Route path="/line" render={() => <LineDemo />} />
-					<Route path="/color" render={() => <Color />} />
-				</Switch>
-			</BrowserRouter>
+			// <BrowserRouter>
+			// 	<Link to="/line">LineDemo</Link>
+			// 	<Link to="/color">Color</Link>
+			// 	<Switch>
+			// 		<Route path="/line" render={() => <LineDemo />} />
+			// 		<Route path="/color" render={() => <Color />} />
+			// 	</Switch>
+			// </BrowserRouter>
+			<Color />
+			// <LineDemo />
 		)
 	}
 }

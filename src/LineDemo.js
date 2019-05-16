@@ -33,7 +33,30 @@ const mockData = [
 		age: 24,
 		testName: 'ADN test',
 		price: 10000,
-
+		start: 1557394805783,
+		end: 1557481205783,
+	},
+	{
+		customer: 'Tin',
+		age: 23,
+		testName: 'ADN test',
+		price: 10000,
+		start: 1557394805783,
+		end: 1557481205783,
+	},
+	{
+		customer: 'Dien',
+		age: 22,
+		testName: 'ADN test',
+		price: 120000,
+		start: 1557394805783,
+		end: 1557481205783,
+	},
+	{
+		customer: 'Son',
+		age: 28,
+		testName: 'ADN test',
+		price: 90000,
 		start: 1557394805783,
 		end: 1557481205783,
 	},
@@ -89,7 +112,23 @@ const mockData = [
 		customer: 'Ngoc',
 		age: 25,
 		testName: 'coloscopy',
-		price: 100000,
+		price: 10000,
+		start: 1557394805783,
+		end: 1557481205783,
+	},
+	{
+		customer: 'Han',
+		age: 22,
+		testName: 'coloscopy',
+		price: 60000,
+		start: 1557394805783,
+		end: 1557481205783,
+	},
+	{
+		customer: 'TuAnh',
+		age: 26,
+		testName: 'Genetic testing',
+		price: 90000,
 		start: 1557394805783,
 		end: 1557481205783,
 	},
@@ -136,6 +175,7 @@ export default class LineDemo extends Component {
 				}}>
 				<div
 					style={{
+						height: 'calc(50vh - 30px)',
 						padding: '20px',
 						marginBottom: '20px',
 						backgroundColor: '#ffffff',
@@ -168,19 +208,22 @@ export default class LineDemo extends Component {
 					<Col span={7}>
 						<div
 							style={{
+								height: 'calc(50vh-30px)',
 								padding: '20px',
 								marginRight: '20px',
 								backgroundColor: '#ffffff',
-								minHeight: '47vh',
 							}}>
 							{/* Select */}
 							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<Title level={4} type="secondary">
+								<Title level={4} strong style={{ color: '#666666' }}>
 									Top 10 referrals
 								</Title>
 								<Select
 									defaultValue="Today"
-									style={{ width: 120, float: 'right' }}
+									style={{
+										width: 120,
+										float: 'right',
+									}}
 									onChange={this.handleChange}>
 									<Option value="Today">Today</Option>
 									<Option value="This week">This week</Option>
@@ -203,45 +246,52 @@ export default class LineDemo extends Component {
 						</div>
 					</Col>
 					<Col span={17}>
-						{/* Ag-grid */}
-						<PieChartToAgGrid
-							data={aggridData}
-							options={{
-								label: 'testName',
-								dataset: 'price',
-								defaultColDef: {
-									sortable: true,
-									filter: true,
-									resizable: true,
-								},
-								columnDefs: [
-									{
-										headerName: 'Test Name',
-										field: 'testName',
-										cellRenderer: params =>
-											params.value.charAt(0).toUpperCase() +
-											params.value.slice(1),
+						<div
+							style={{
+								height: 'calc(50vh-30px)',
+								padding: '20px',
+								backgroundColor: '#ffffff',
+							}}>
+							{/* Ag-grid */}
+							<PieChartToAgGrid
+								data={aggridData}
+								options={{
+									label: 'customer',
+									dataset: 'price',
+									defaultColDef: {
+										sortable: true,
+										filter: true,
+										resizable: true,
 									},
-									{
-										headerName: 'Price',
-										field: 'price',
-									},
-									{
-										headerName: 'Start',
-										field: 'start',
-										cellRenderer: params =>
-											moment(params.value).format('DD/MM/YYYY'),
-									},
-									{
-										headerName: 'End',
-										field: 'end',
-										cellRenderer: params =>
-											moment(params.value).format('DD/MM/YYYY'),
-									},
-								],
-							}}
-							onGridReady={this.onGridReady}
-						/>
+									columnDefs: [
+										{
+											headerName: 'Test Name',
+											field: 'customer',
+											cellRenderer: params =>
+												params.value.charAt(0).toUpperCase() +
+												params.value.slice(1),
+										},
+										{
+											headerName: 'Price',
+											field: 'price',
+										},
+										{
+											headerName: 'Start',
+											field: 'start',
+											cellRenderer: params =>
+												moment(params.value).format('DD/MM/YYYY'),
+										},
+										{
+											headerName: 'End',
+											field: 'end',
+											cellRenderer: params =>
+												moment(params.value).format('DD/MM/YYYY'),
+										},
+									],
+								}}
+								onGridReady={this.onGridReady}
+							/>
+						</div>
 					</Col>
 				</Row>
 				<div />
