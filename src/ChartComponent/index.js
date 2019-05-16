@@ -18,7 +18,7 @@ const months = [
 	'September',
 	'October',
 	'November',
-	'December'
+	'December',
 ]
 
 const colors = [
@@ -31,7 +31,7 @@ const colors = [
 	'rgba(56, 103, 214, 0.6)',
 	'rgba(136, 84, 208, 0.6)',
 	'rgba(165, 177, 194, 0.6)',
-	'rgba(75, 101, 132, 0.6)'
+	'rgba(75, 101, 132, 0.6)',
 ]
 
 const uppercaseFristLetter = item => item.charAt(0).toUpperCase() + item.slice(1)
@@ -48,53 +48,57 @@ const BarChartComponent = props => {
 
 	const dateFormat = type === 'D' ? type : 'M'
 
-	data.map(item => {
-		const labelItem = uppercaseFristLetter(item[label])
-		const datasetItem = item[dataset]
-		const start = moment(item.start).format(dateFormat) - 1
-		const end = moment(item.end).format(dateFormat) - 1
-		for (let i = 0; i < labels.length; i++) {
-			// console.log(label)
-			const compare = chartData.datasets.some(item => item.label === labelItem)
-			if (compare) {
-				const compareArray = chartData.datasets.filter(
-					item => item.label === labelItem
-				)
-				if (compareArray[0].data.length === labels.length) {
-					if (i >= start && i <= end) {
-						compareArray[0].data[i] += datasetItem
+	data &&
+		data.map(item => {
+			const labelItem = uppercaseFristLetter(item[label])
+			const datasetItem = item[dataset]
+			const start = moment(item.start).format(dateFormat) - 1
+			const end = moment(item.end).format(dateFormat) - 1
+			for (let i = 0; i < labels.length; i++) {
+				// console.log(label)
+				const compare = chartData.datasets.some(item => item.label === labelItem)
+				if (compare) {
+					const compareArray = chartData.datasets.filter(
+						item => item.label === labelItem
+					)
+					if (compareArray[0].data.length === labels.length) {
+						if (i >= start && i <= end) {
+							compareArray[0].data[i] += datasetItem
+						}
+					} else {
+						if (i >= start && i <= end) {
+							compareArray[0].data.push(datasetItem)
+						} else {
+							compareArray[0].data.push(0)
+						}
 					}
 				} else {
+					// console.log(label)
+					chartData.datasets.push({
+						label: labelItem,
+						backgroundColor: colors[chartData.datasets.length],
+						// backgroundColor: colors,
+						data: [],
+					})
+					const compareArray = chartData.datasets.filter(
+						item => item.label === labelItem
+					)
 					if (i >= start && i <= end) {
 						compareArray[0].data.push(datasetItem)
 					} else {
 						compareArray[0].data.push(0)
 					}
 				}
-			} else {
-				// console.log(label)
-				chartData.datasets.push({
-					label: labelItem,
-					backgroundColor: colors[chartData.datasets.length],
-					// backgroundColor: colors,
-					data: []
-				})
-				const compareArray = chartData.datasets.filter(
-					item => item.label === labelItem
-				)
-				if (i >= start && i <= end) {
-					compareArray[0].data.push(datasetItem)
-				} else {
-					compareArray[0].data.push(0)
-				}
 			}
-		}
-		return item
-	})
+			return item
+		})
 
 	chartData.labels = labels
 
 	// console.log(chartData)
+	if (!data) {
+		return <div>a</div>
+	}
 
 	return (
 		<article style={{ height: '42vh', paddingBottom: '20px' }}>
@@ -104,14 +108,14 @@ const BarChartComponent = props => {
 					title: title && {
 						display: true,
 						text: title,
-						fontSize: 20
+						fontSize: 20,
 					},
 					legend: {
 						display: true,
-						position: 'right'
+						position: 'right',
 					},
 					maintainAspectRatio: false, // Don't maintain w/h ratio
-					scales: scales
+					scales: scales,
 				}}
 				height={50}
 			/>
@@ -129,9 +133,9 @@ const PieChartComponent = props => {
 		datasets: [
 			{
 				data: [],
-				backgroundColor: []
-			}
-		]
+				backgroundColor: [],
+			},
+		],
 	}
 
 	let pieRowData = []
@@ -171,13 +175,13 @@ const PieChartComponent = props => {
 					title: title && {
 						display: true,
 						text: title,
-						fontSize: 20
+						fontSize: 20,
 					},
 					legend: {
 						display: false,
-						position: 'left'
+						position: 'left',
 					},
-					maintainAspectRatio: false // Don't maintain w/h ratio
+					maintainAspectRatio: false, // Don't maintain w/h ratio
 				}}
 				height={50}
 			/>
@@ -186,37 +190,38 @@ const PieChartComponent = props => {
 }
 
 const PieChartToAgGrid = props => {
-	console.log(props)
+	// console.log(props)
 	const { data, options, onGridReady } = props
 	const { label, dataset, columnDefs, defaultColDef } = options
-
+	// console.log(data)
 	// console.log(label, dataset, columnDefs, defaultColDef)
 	const rowData = []
 
-	data.map((item, index) => {
-		const labelItem = item[label]
-		const datasetItem = item[dataset]
-		const start = item.start
-		const end = item.end
+	data &&
+		data.map((item, index) => {
+			const labelItem = item[label]
+			const datasetItem = item[dataset]
+			const start = item.start
+			const end = item.end
 
-		const compare = rowData.find(item => item[label] === labelItem)
+			const compare = rowData.find(item => item[label] === labelItem)
 
-		if (compare) {
-			if (datasetItem > 0) {
-				compare[dataset] += datasetItem
+			if (compare) {
+				if (datasetItem > 0) {
+					compare[dataset] += datasetItem
+				}
+				if (start < compare.start) {
+					compare.start = start
+				}
+				if (end > compare.end) {
+					compare.end = end
+				}
+			} else {
+				const clone = JSON.parse(JSON.stringify(item))
+				rowData.push(clone)
 			}
-			if (start < compare.start) {
-				compare.start = start
-			}
-			if (end > compare.end) {
-				compare.end = end
-			}
-		} else {
-			const clone = JSON.parse(JSON.stringify(item))
-			rowData.push(clone)
-		}
-		return item
-	})
+			return item
+		})
 	// console.log('rowData', rowData)
 
 	return (
@@ -224,9 +229,8 @@ const PieChartToAgGrid = props => {
 			className="ag-theme-balham"
 			style={{
 				height: '47vh',
-				width: '100%'
-			}}
-		>
+				width: '100%',
+			}}>
 			<AgGridReact
 				columnDefs={columnDefs}
 				rowData={rowData}

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
+import { Select, Row, Col, Typography } from 'antd'
 import moment from 'moment'
-import { Select, DatePicker, Row, Col, Typography } from 'antd'
 
 import {
 	BarChartComponent,
 	PieChartComponent,
-	PieChartToAgGrid
+	PieChartToAgGrid,
 } from './ChartComponent'
 
 const { Option } = Select
@@ -18,7 +18,7 @@ const mockData = [
 		testName: 'ADN test normal',
 		price: 10000,
 		start: 1557308405783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Hung',
@@ -26,7 +26,7 @@ const mockData = [
 		testName: 'echocardiography',
 		price: 100000,
 		start: 1557394805783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Phong',
@@ -35,7 +35,7 @@ const mockData = [
 		price: 10000,
 
 		start: 1557394805783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Tam',
@@ -43,7 +43,7 @@ const mockData = [
 		testName: 'skin allergy test',
 		price: 140000,
 		start: 1557481205783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Toan',
@@ -51,7 +51,7 @@ const mockData = [
 		testName: 'ADN test normal',
 		price: 20000,
 		start: 1557481205783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Hoan',
@@ -59,7 +59,7 @@ const mockData = [
 		testName: 'Genetic testing',
 		price: 110000,
 		start: 1557308405783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Trung',
@@ -67,7 +67,7 @@ const mockData = [
 		testName: 'Genetic testing',
 		price: 60000,
 		start: 1557481205783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Hang',
@@ -75,7 +75,7 @@ const mockData = [
 		testName: 'coloscopy',
 		price: 100000,
 		start: 1557481205783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Quynh',
@@ -83,7 +83,7 @@ const mockData = [
 		testName: 'ADN test normal',
 		price: 70000,
 		start: 1557481205783,
-		end: 1557481205783
+		end: 1557481205783,
 	},
 	{
 		customer: 'Ngoc',
@@ -91,21 +91,21 @@ const mockData = [
 		testName: 'coloscopy',
 		price: 100000,
 		start: 1557394805783,
-		end: 1557481205783
-	}
+		end: 1557481205783,
+	},
 ]
 
 export default class LineDemo extends Component {
 	state = {
 		barData: [],
-		pieData: []
+		pieData: [],
 	}
 
 	componentWillMount() {
 		this.setState({
 			barData: mockData,
 			pieData: mockData,
-			aggridData: mockData
+			aggridData: mockData,
 		})
 	}
 
@@ -113,7 +113,7 @@ export default class LineDemo extends Component {
 		console.log(value)
 
 		this.setState({
-			pieData: mockData
+			pieData: mockData,
 		})
 	}
 
@@ -132,16 +132,14 @@ export default class LineDemo extends Component {
 					backgroundColor: '#ff4d4f',
 					height: '100vh',
 					padding: '20px',
-					overflow: 'auto'
-				}}
-			>
+					overflow: 'auto',
+				}}>
 				<div
 					style={{
 						padding: '20px',
 						marginBottom: '20px',
-						backgroundColor: '#ffffff'
-					}}
-				>
+						backgroundColor: '#ffffff',
+					}}>
 					{/* Bar */}
 					<BarChartComponent
 						data={barData}
@@ -154,17 +152,15 @@ export default class LineDemo extends Component {
 								yAxes: [
 									{
 										ticks: {
-											callback: function(label, index, labels) {
-												return label / 1000 + 'k'
-											}
+											callback: (label, index, labels) => label / 1000 + 'k',
 										},
 										scaleLabel: {
-											display: true,
-											labelString: '1k = 1000'
-										}
-									}
-								]
-							}
+											display: false,
+											labelString: '1k = 1000',
+										},
+									},
+								],
+							},
 						}}
 					/>
 				</div>
@@ -175,9 +171,8 @@ export default class LineDemo extends Component {
 								padding: '20px',
 								marginRight: '20px',
 								backgroundColor: '#ffffff',
-								minHeight: '47vh'
-							}}
-						>
+								minHeight: '47vh',
+							}}>
 							{/* Select */}
 							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 								<Title level={4} type="secondary">
@@ -186,8 +181,7 @@ export default class LineDemo extends Component {
 								<Select
 									defaultValue="Today"
 									style={{ width: 120, float: 'right' }}
-									onChange={this.handleChange}
-								>
+									onChange={this.handleChange}>
 									<Option value="Today">Today</Option>
 									<Option value="This week">This week</Option>
 									<Option value="1 month">1 month</Option>
@@ -202,7 +196,7 @@ export default class LineDemo extends Component {
 								data={pieData}
 								options={{
 									label: 'testName',
-									dataset: 'price'
+									dataset: 'price',
 									// title: 'Top 10 referrals'
 								}}
 							/>
@@ -218,26 +212,33 @@ export default class LineDemo extends Component {
 								defaultColDef: {
 									sortable: true,
 									filter: true,
-									resizable: true
+									resizable: true,
 								},
 								columnDefs: [
 									{
-										headerName: 'testName',
-										field: 'testName'
+										headerName: 'Test Name',
+										field: 'testName',
+										cellRenderer: params =>
+											params.value.charAt(0).toUpperCase() +
+											params.value.slice(1),
 									},
 									{
-										headerName: 'price',
-										field: 'price'
+										headerName: 'Price',
+										field: 'price',
 									},
 									{
-										headerName: 'start',
-										field: 'start'
+										headerName: 'Start',
+										field: 'start',
+										cellRenderer: params =>
+											moment(params.value).format('DD/MM/YYYY'),
 									},
 									{
-										headerName: 'end',
-										field: 'end'
-									}
-								]
+										headerName: 'End',
+										field: 'end',
+										cellRenderer: params =>
+											moment(params.value).format('DD/MM/YYYY'),
+									},
+								],
 							}}
 							onGridReady={this.onGridReady}
 						/>
