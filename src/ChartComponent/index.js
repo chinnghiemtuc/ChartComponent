@@ -2,6 +2,10 @@ import React from 'react'
 import { Bar, Pie } from 'react-chartjs-2'
 import moment from 'moment'
 import { AgGridReact } from 'ag-grid-react'
+import { Select, Typography, Empty } from 'antd'
+
+const { Option } = Select
+const { Title } = Typography
 
 const daysInMonth = moment().daysInMonth() + 1 // 31
 const days = [...Array(daysInMonth).keys()].slice(1)
@@ -21,7 +25,7 @@ const months = [
 	'December',
 ]
 
-const colors = [
+const defaultColors = [
 	'rgba(235, 59, 90, 0.6)',
 	'rgba(250, 130, 49, 0.6)',
 	'rgba(247, 183, 49, 0.6)',
@@ -38,7 +42,7 @@ const uppercaseFristLetter = item => item.charAt(0).toUpperCase() + item.slice(1
 
 const BarChartComponent = props => {
 	// console.log(props)
-	const { data, options } = props
+	const { data, options, colors } = props
 	const { label, dataset, type, title, scales } = options
 	// console.log(data, label, dataset, type, title)
 
@@ -76,8 +80,10 @@ const BarChartComponent = props => {
 					// console.log(label)
 					chartData.datasets.push({
 						label: labelItem,
-						backgroundColor: colors[chartData.datasets.length],
-						// backgroundColor: colors,
+						backgroundColor: colors
+							? colors[chartData.datasets.length]
+							: defaultColors[chartData.datasets.length],
+						// backgroundColor: defaultColors,
 						data: [],
 					})
 					const compareArray = chartData.datasets.filter(
@@ -125,7 +131,7 @@ const BarChartComponent = props => {
 
 const PieChartComponent = props => {
 	// console.log(props)
-	const { data, options } = props
+	const { data, options, colors, handleChange } = props
 	const { label, dataset, title } = options
 
 	let chartData = {
@@ -165,30 +171,55 @@ const PieChartComponent = props => {
 		return item
 	})
 
-	chartData.datasets[0].backgroundColor = colors
+	chartData.datasets[0].backgroundColor = colors ? colors : defaultColors
 
 	return (
-		<article
-			style={{
-				height: '40vh',
-			}}>
-			<Pie
-				data={chartData.datasets ? chartData : {}}
-				options={{
-					title: title && {
-						display: true,
-						text: title,
-						fontSize: 20,
-					},
-					legend: {
-						display: false,
-						position: 'left',
-					},
-					maintainAspectRatio: false, // Don't maintain w/h ratio
-				}}
-				height={50}
-			/>
-		</article>
+		<div>
+			{/* Select */}
+			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+				{title && (
+					<Title level={4} strong style={{ color: '#666666' }}>
+						{title}
+					</Title>
+				)}
+				<Select
+					defaultValue="5"
+					style={{ width: 120, float: 'right' }}
+					onChange={handleChange}>
+					<Option value="0">Today</Option>
+					<Option value="1">This week</Option>
+					<Option value="2">1 month</Option>
+					<Option value="3">3 months</Option>
+					<Option value="4">6 months</Option>
+					<Option value="5">YTD</Option>
+				</Select>
+			</div>
+			{/* Pie */}
+			<article style={{ height: '30vh', paddingTop: '5vh' }}>
+				{chartData.labels.length > 0 ? (
+					<Pie
+						data={chartData.datasets ? chartData : {}}
+						options={{
+							title: {
+								display: false,
+								text: title,
+								fontSize: 20,
+							},
+							legend: {
+								display: false,
+								position: 'left',
+							},
+							maintainAspectRatio: false, // Don't maintain w/h ratio
+						}}
+						height={50}
+					/>
+				) : (
+					<div style={{ textAlign: 'center' }}>
+						<Empty />
+					</div>
+				)}
+			</article>
+		</div>
 	)
 }
 
@@ -231,9 +262,7 @@ const PieChartToAgGrid = props => {
 		<div
 			className="ag-theme-balham"
 			style={{
-				minHeight: '44vh',
-				maxHeight: 'calc(50vh-20px)',
-				height: '400px',
+				height: '42.8vh',
 				width: '100%',
 			}}>
 			<AgGridReact

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Row, Col, Typography } from 'antd'
+import { Row, Col } from 'antd'
 import moment from 'moment'
 
 import {
@@ -8,8 +8,16 @@ import {
 	PieChartToAgGrid,
 } from './ChartComponent'
 
-const { Option } = Select
-const { Title } = Typography
+const colors = [
+	'rgba(13, 71, 161, 0.6)',
+	'rgba(63, 81, 181, 0.6)',
+	'rgba(33, 150, 243, 0.6)',
+	'rgba(0, 188, 212, 0.6)',
+	'rgba(0, 150, 136, 0.6)',
+	'rgba(76, 175, 80, 0.6)',
+	'rgba(102, 187, 106, 0.6)',
+	'rgba(76, 175, 80, 0.6)',
+]
 
 const mockData = [
 	{
@@ -112,7 +120,7 @@ const mockData = [
 		customer: 'Ngoc',
 		age: 25,
 		testName: 'coloscopy',
-		price: 10000,
+		price: 100000,
 		start: 1557394805783,
 		end: 1557481205783,
 	},
@@ -120,15 +128,15 @@ const mockData = [
 		customer: 'Han',
 		age: 22,
 		testName: 'coloscopy',
-		price: 60000,
+		price: 600000,
 		start: 1557394805783,
 		end: 1557481205783,
 	},
 	{
 		customer: 'TuAnh',
 		age: 26,
-		testName: 'Genetic testing',
-		price: 90000,
+		testName: 'coloscopy',
+		price: 900000,
 		start: 1557394805783,
 		end: 1557481205783,
 	},
@@ -151,8 +159,39 @@ export default class LineDemo extends Component {
 	handleChange = value => {
 		console.log(value)
 
+		let start
+		let end
+
+		const now = +moment()
+		const startOfDay = +moment().startOf('day')
+		const startOfWeek = +moment().startOf('week')
+		const startOfMonth = +moment().startOf('month')
+		const threeMonths = +moment().subtract(3, 'months')
+		const startOf3Months = +moment(threeMonths).startOf('month')
+		const sixMonths = +moment().subtract(6, 'months')
+		const startOf6Months = +moment(sixMonths).startOf('month')
+		const startOfYear = +moment().startOf('year')
+
+		const startArray = [
+			startOfDay,
+			startOfWeek,
+			startOfMonth,
+			startOf3Months,
+			startOf6Months,
+			startOfYear,
+		]
+
+		start = startArray[value]
+		end = now
+
+		let copyMockData = [...mockData]
+
+		copyMockData = copyMockData.filter(
+			item => item.start >= start && item.end <= end
+		)
+
 		this.setState({
-			pieData: mockData,
+			pieData: copyMockData,
 		})
 	}
 
@@ -175,12 +214,11 @@ export default class LineDemo extends Component {
 				}}>
 				<div
 					style={{
-						height: 'calc(50vh - 30px)',
+						height: '46.8vh',
 						padding: '20px',
 						marginBottom: '20px',
 						backgroundColor: '#ffffff',
 					}}>
-					{/* Bar */}
 					<BarChartComponent
 						data={barData}
 						options={{
@@ -202,53 +240,35 @@ export default class LineDemo extends Component {
 								],
 							},
 						}}
+						colors={colors}
 					/>
 				</div>
 				<Row>
 					<Col span={7}>
 						<div
 							style={{
-								height: 'calc(50vh-30px)',
+								height: '46.8vh',
 								padding: '20px',
 								marginRight: '20px',
 								backgroundColor: '#ffffff',
 							}}>
-							{/* Select */}
-							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<Title level={4} strong style={{ color: '#666666' }}>
-									Top 10 referrals
-								</Title>
-								<Select
-									defaultValue="Today"
-									style={{
-										width: 120,
-										float: 'right',
-									}}
-									onChange={this.handleChange}>
-									<Option value="Today">Today</Option>
-									<Option value="This week">This week</Option>
-									<Option value="1 month">1 month</Option>
-									<Option value="3 months">3 months</Option>
-									<Option value="6 months">6 months</Option>
-									<Option value="YTD">YTD</Option>
-								</Select>
-							</div>
-
 							{/* Pie */}
 							<PieChartComponent
 								data={pieData}
 								options={{
 									label: 'testName',
 									dataset: 'price',
-									// title: 'Top 10 referrals'
+									title: 'Top 10 referrals',
 								}}
+								colors={colors}
+								handleChange={this.handleChange}
 							/>
 						</div>
 					</Col>
 					<Col span={17}>
 						<div
 							style={{
-								height: 'calc(50vh-30px)',
+								height: '46.8vh',
 								padding: '20px',
 								backgroundColor: '#ffffff',
 							}}>
@@ -256,7 +276,7 @@ export default class LineDemo extends Component {
 							<PieChartToAgGrid
 								data={aggridData}
 								options={{
-									label: 'customer',
+									label: 'testName',
 									dataset: 'price',
 									defaultColDef: {
 										sortable: true,
@@ -266,7 +286,7 @@ export default class LineDemo extends Component {
 									columnDefs: [
 										{
 											headerName: 'Test Name',
-											field: 'customer',
+											field: 'testName',
 											cellRenderer: params =>
 												params.value.charAt(0).toUpperCase() +
 												params.value.slice(1),
